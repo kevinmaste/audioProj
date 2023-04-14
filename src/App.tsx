@@ -1,25 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// eslint-disable-next-line
+import Register from "./component/Authentication/Register";
+// eslint-disable-next-line
+import Layout from "./component/Layout";
+// eslint-disable-next-line
+import HomePage from "./pages/Homepage/HomePage";
+import Home from "./pages/Home/Home";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+        <Home/>
+    </>
   );
 }
 
