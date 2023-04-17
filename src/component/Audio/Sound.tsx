@@ -1,7 +1,13 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import WaveSurfer from 'wavesurfer.js'
 import {Button} from "@mui/material";
 import {ButtonsContainer, Container, WavesurferContainer} from "./ui";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type AudioFile ={
     audio:string
@@ -11,6 +17,8 @@ function Sound({audio}:AudioFile) {
     //for using wavesurfer element
     const waveSurferRef = useRef<HTMLDivElement>(null)
     const waveRef = useRef<WaveSurfer>()
+    const [inAction,setInaction] = useState<boolean>()
+
 
     useEffect(() => {
          waveRef.current = WaveSurfer.create({
@@ -26,9 +34,6 @@ function Sound({audio}:AudioFile) {
         })
         console.log('audio is :',audio)
         waveRef.current.load(audio)
-
-        //console.log(waveRef.current ==wavesurfer ? "vrai":"fauxq")
-        //
         // waveRef.current = wavesurfer
         //destroyer
         return () => {
@@ -37,18 +42,43 @@ function Sound({audio}:AudioFile) {
     }, [audio])
 
 
-    const playing =()=>{
-        waveRef.current?.play()
+    const handlePlayPause =()=>{
+
+        const isPlaying = waveRef.current?.isPlaying() ?? false
+        if(isPlaying){
+            waveRef.current?.pause()
+        }else {
+            waveRef.current?.play()
+        }
+
+        setInaction(!isPlaying)
+
     }
-    const pause =()=>{
-        waveRef.current?.pause()
-    }
+
+
+
     return (
         <Container>
             <WavesurferContainer ref={waveSurferRef} ></WavesurferContainer>
-            <ButtonsContainer>
-                <Button onClick={playing}>Play</Button>
-                <Button onClick={pause}>Pause</Button>
+            <ButtonsContainer onClick={handlePlayPause}>
+                {inAction ? (
+                    <div>
+                        <PauseIcon />
+                    </div>
+                ):(
+                    <div>
+                        <PlayArrowIcon/>
+                    </div>
+                )}
+                <div>
+                    <SkipPreviousIcon/>
+                </div>
+                <div>
+                    <SkipNextIcon/>
+                </div>
+                <div>
+                    <FavoriteIcon/>
+                </div>
             </ButtonsContainer>
         </Container>
     );

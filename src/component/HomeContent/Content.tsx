@@ -5,7 +5,7 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 import SearchIcon from '@mui/icons-material/Search';
 import Sound from "../Audio/Sound";
 // @ts-ignore
-import piste_1 from '../../assets/musique/song.mp3'
+import piste_1 from '../../assets/musique/song-2.mp3'
 function Content() {
     return (
         <ContentBody>
