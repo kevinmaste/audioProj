@@ -1,12 +1,21 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {BottomContent, BottomItem2, BottomMeteoContent, ContentBody, MeteoContent} from "./ui";
 import {Typography} from "@mui/material";
 import NearMeIcon from '@mui/icons-material/NearMe';
 import SearchIcon from '@mui/icons-material/Search';
 import Sound from "../Audio/Sound";
 // @ts-ignore
-import piste_1 from '../../assets/musique/song-2.mp3'
+import {updateMusiquePromise} from "../Audio/utils";
+
+
+interface TokenResponse {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+}
 function Content() {
+
+    //console.log('access token is',accessToken)
     return (
         <ContentBody>
             <MeteoContent>
@@ -19,7 +28,7 @@ function Content() {
                         {/*<NearMeIcon/>
                             <span>My location</span>*/}
                         {/*<Sound audio={"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"}/>*/}
-                        <Sound audio={piste_1}/>
+                        <Sound audio={updateMusiquePromise}/>
                     </div>
                     {/*On met tout en pause pour cette partie pour avoir la place pour la musique*/}
                     {/*<BottomItem2>

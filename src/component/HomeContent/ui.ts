@@ -18,7 +18,7 @@ export const MeteoContent= styled.div`
 `
 
 export const BottomMeteoContent = styled.div`
-  width: 87%;
+  width: 90%;
   border-radius: 1rem;
   background-color: #fdfdfdfa;
   height: 7rem;
@@ -31,22 +31,28 @@ export const BottomMeteoContent = styled.div`
 `
 
 export const BottomContent = styled.div`
-  display: flex;
-  height: inherit;
-  align-items: center;
-  padding: 1.5rem;
+  //display: flex;
+  //height: inherit;
+  //align-items: center;
+  //padding: 1.5rem;
   //before that was first-child
+  height: inherit;
+  display: flex;
+  align-items: center;
+  padding-right: .8rem;
   &>div:first-of-type{
     flex-grow: 1;
+    
   }
 `
 
 export const BottomItem2=styled.div`
   //same here
+  margin-right: 5px;
   & > div:first-of-type{
     background-color: #9ad4ff;
     display: flex;
-    padding: 10px;
+    padding: 5px;
     border-radius: 50px;
   }
 
