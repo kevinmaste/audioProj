@@ -48,15 +48,19 @@ export const BottomContent = styled.div`
 
 export const BottomItem2=styled.div`
   //same here
-  margin-right: 5px;
+  //margin-right: 5px;
   & > div:first-of-type{
-    background-color: #9ad4ff;
+    background-color: #2b2c2c;
     display: flex;
     padding: 5px;
     border-radius: 50px;
+    
+  
   }
 
   .MuiSvgIcon-root{
     color: white;
   }
+  
+
 `

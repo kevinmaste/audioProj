@@ -20,3 +20,18 @@ export const Nav = styled.div`
     height: 35px !important;
   }
 `
+
+//inputCustom type
+type Input={
+    open:boolean
+}
+export const InputCustom = styled.input<Input>`
+  border-radius: .2rem;
+  border: none;
+  display: ${props=>props.open ? 'inline':'none'}
+  };
+  &.change:hover{
+    cursor: pointer;
+   }
+  
+`

@@ -8,7 +8,7 @@ export type Music = {
 let updateMusique: Music[] = [];
 
 let importTab: string[] = []
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 10; i++) {
     // eslint-disable-next-line no-loop-func
     import(`assets/musique/song-${i}.mp3`).then((module) => {
         //const varName:any = `assets/musique/song-${i}`;
@@ -44,6 +44,27 @@ const musiqueTab :Music[]= [
         name: "muz 5"
     }, {
         id: 6,
+        musique: "",
+        name: "muz 6"
+    },
+    {
+        id: 7,
+        musique: "",
+        name: "muz 6"
+    }
+    ,
+    {
+        id: 8,
+        musique: "",
+        name: "muz 6"
+    },
+    {
+        id: 9,
+        musique: "",
+        name: "muz 6"
+    },
+    {
+        id: 10,
         musique: "",
         name: "muz 6"
     }
