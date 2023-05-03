@@ -75,7 +75,7 @@ function wait(ms:number):Promise<void>{
     return  new Promise((resolve)=>setTimeout(resolve,ms))
 }
 
-export const updateMusiquePromise =wait(500).then(()=>{
+export const updateMusiquePromise =wait(700).then(()=>{
     return musiqueTab.map((obj,index)=>{
 
         if (obj.musique ===""){

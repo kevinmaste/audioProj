@@ -6,8 +6,14 @@ export const ContentBody = styled.div`
   
 `
 
-export const MeteoContent= styled.div`
-  background-image: url(${background});
+
+//type Content
+type contentProps ={
+    url:string
+}
+export const MeteoContent= styled.div<contentProps>`
+  background-image: url(${props=>props.url});
+  padding: 10px;
   width: 100%;
   height: 70vh;
   background-size: cover;
@@ -49,18 +55,37 @@ export const BottomContent = styled.div`
 export const BottomItem2=styled.div`
   //same here
   //margin-right: 5px;
-  & > div:first-of-type{
-    background-color: #2b2c2c;
+  margin: 3px 0;
+  & > div:first-of-type {
+    background-color: #ffffff00;
     display: flex;
     padding: 5px;
     border-radius: 50px;
-    
-  
+    justify-content: center;
+
+
   }
 
-  .MuiSvgIcon-root{
-    color: white;
+  .MuiSvgIcon-root {
+    color:#2de791;
   }
-  
 
+
+`
+
+
+//type for the button item
+
+export const ButtonItem = styled.div`
+
+  background: #8f77ee;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${props => props.className=== "change" ? 0 : 50}px;
+  &:hover{
+    cursor: pointer;
+  }
 `

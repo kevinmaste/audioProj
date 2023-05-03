@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const Nav = styled.div`
   display: flex;
   align-items: center;
-  padding: .6rem;
+  padding: .5rem;
   //before nth-child(1)
   & div:nth-of-type(1){
     display: flex;
@@ -26,12 +26,12 @@ type Input={
     open:boolean
 }
 export const InputCustom = styled.input<Input>`
+  outline: none;
   border-radius: .2rem;
   border: none;
-  display: ${props=>props.open ? 'inline':'none'}
-  };
-  &.change:hover{
-    cursor: pointer;
-   }
+  display: ${props=>props.open ? 'inline':'none'};
+  padding: .3rem;
+  & input[type="text"]:focus{
+    outline: none;
   
 `
