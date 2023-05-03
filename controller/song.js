@@ -6,15 +6,18 @@ const {spawn} = require('child_process')
 const songSearch = async (req,res)=>{
     const item = req.params.name
     const artistName = req.query.artist
+    const fusionArtist = `${item} -${artistName}`
+
+    console.log("artist is ",artistName)
 
     console.log('item is :',item)
     const api = new YoutubeMusicApi()
 
     api.initalize()
         .then((query, categoryName="song", _pageLimit = 1)=>{
-            api.search(item, categoryName=artistName, _pageLimit).then(result=>{
-                console.log(result)
-                res.json(result)
+            api.search(fusionArtist, 'song', _pageLimit).then(result=>{
+                console.log("the resutat is",result.content[0])
+                res.json(result.content[0])
             })
         }).catch(err=>{
             console.log(err)
@@ -28,6 +31,7 @@ const songSuggestions = async (req,res)=>{
     console.log('item is :',item)
     const api = new YoutubeMusicApi()
 
+
     api.initalize()
         .then((query, categoryName="song", _pageLimit = 1)=>{
             api.getSearchSuggestions(item).then(result=>{
@@ -38,7 +42,9 @@ const songSuggestions = async (req,res)=>{
         }).catch(err=>{
         console.log(err)
         //put the status 500 after
-        res.send({error:err.message})
+        //res.status(404).send({error:err.message})
+        res.json(err.message)
+
     })
 }
 
@@ -76,4 +82,7 @@ const songGerenator = async (req,res)=>{
        res.status(400).send({error:e.message})
    }
 }
+
+
+
 module.exports = {songSearch, songSuggestions,songGerenator}
