@@ -1,4 +1,4 @@
-import React, {ChangeEvent, SyntheticEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, SyntheticEvent, useEffect, useRef,KeyboardEvent ,useState} from 'react';
 import {BottomContent, BottomItem2, BottomMeteoContent, ButtonItem, ContentBody, MeteoContent} from "./ui";
 import {Divider, List, ListItem, ListItemText, Snackbar, Typography} from "@mui/material";
 import NearMeIcon from '@mui/icons-material/NearMe';
@@ -26,7 +26,10 @@ function Content() {
     const [controlledError,setControlledError]=useState<boolean>(false)
     const [searchItem,setSearchItem]=useState<string>('')
     const [valueBlur,setValueBlur] = useState<string>('')
-    const [catchData,setCatchData]=useState<string[]>([])
+
+    //catching the data from the suggestion part
+    const [catchData,setCatchData]=useState<string[] >([])
+
     const [modalOpen,setModalOpen]=useState<boolean>(false)
 
     //we going to pass that to the modal for the managing of the download
@@ -42,6 +45,7 @@ function Content() {
 
     const [teste, setTeste]=useState<boolean>(false)
 
+    //the useEffect permit to send the data to the server dans print the element.
      useEffect( ()=>{
 
         if (searchItem !=='') {
@@ -61,6 +65,27 @@ function Content() {
 
 
     },[searchItem])
+    console.log("catch item is : ",catchData)
+    //the suggestion can be empty , so if the array in empty this useEffect will automatically use
+    useEffect( ()=>{
+
+        if (catchData?.length ===0) {
+            fetch(`http://localhost:8080/api/search/${searchItem}`)
+                .then(result => result.json())
+                .then(data=>{
+                    console.log("la data est d'un element qui n'a pas de sugestion is : ",data)
+                    //le separateur
+                    //separate(data,searchItem)
+                    //setCatchData(data)
+                    //setTeste(true)
+                })
+                .catch(err => {
+                    console.log("L'erreur est : ", err)
+                })
+        }
+
+
+    },[catchData])
 
     console.log('teste est : ',teste)
 
@@ -76,7 +101,7 @@ function Content() {
             setvideoInfos({
                 artist:result.data['artist'].name || result.data["album"].name,
                 songName:result.data['name'],
-                thumbnails:result.data.thumbnails[1].url
+                thumbnails:result.data.thumbnails[0]?.url
             })
             console.log('resutat of the song is : ',result.data)
 
@@ -100,6 +125,7 @@ function Content() {
 
     //This function set the value of the input via the onBlur
     const HandleBlur=()=>{
+        console.log('the handleblur is calling ')
         setSearchItem(valueBlur)
     }
 
@@ -108,6 +134,7 @@ function Content() {
         //s'il n'y a rien d'écrit je vais faire apparaitre l'arlert
         if(valueBlur ===''){
             setControlledError(true)
+            return;
         }
         setOpen(false)
         setValueBlur('')
@@ -118,7 +145,11 @@ function Content() {
         setOpen(true)
     }
 
-
+    const handlePressButton = (e:KeyboardEvent<HTMLInputElement>)=>{
+        if (e.key==="Enter"){
+            handleButtonSend()
+        }
+    }
     const handleCloseError = (event?:SyntheticEvent | Event,reason?:string)=>{
         if (reason==='clickaway'){
             return;
@@ -137,10 +168,10 @@ function Content() {
                             overflow: 'auto',
                             maxWidth: 360,
                             bgcolor: 'background.paper',
-                            maxHeight: 350,
+                            maxHeight: 230,
                             margin:"auto !important"
                         }} component={"nav"}>
-                            {catchData?.map((item,index)=>(
+                            {Array.isArray(catchData) && catchData.map((item,index)=>(
                                <div key={item+`${index}`}>
                                    <ListItem button  divider onClick={()=>handleSearch(item,searchItem)}>
                                        <ListItemText primary={item}/>
@@ -177,7 +208,13 @@ function Content() {
                 <BottomItem2>
                     <div>
                         {/*voir comment se passe les form dans react */}
-                        <InputCustom onChange={handleOnchange} onBlur={HandleBlur} value={valueBlur} type="text" open={open}/>
+                        <InputCustom
+                            onChange={handleOnchange}
+                            onBlur={HandleBlur}
+                            value={valueBlur}
+                            onKeyPress={handlePressButton}
+                            type="text"
+                            open={open}/>
                         {
                             open ? (
                                 <ButtonItem className="change" onClick={handleButtonSend}>
