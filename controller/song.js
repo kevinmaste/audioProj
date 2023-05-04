@@ -15,7 +15,7 @@ const songSearch = async (req,res)=>{
 
     api.initalize()
         .then((query, categoryName="song", _pageLimit = 1)=>{
-            api.search(fusionArtist, 'song', _pageLimit).then(result=>{
+            api.search(fusionArtist, _pageLimit).then(result=>{
                 console.log("the resutat is",result.content[0])
                 res.json(result.content[0])
             })
@@ -68,11 +68,16 @@ const songGerenator = async (req,res)=>{
            ], {
                stdio: ['pipe', 'pipe', 'pipe']
            });
+
+           res.set({
+               'Content-Disposition':`attachment; filename="${songName}.mp3"`,
+               'Content-Type':'audio/mpeg'
+           })
            video.pipe(ffmpegProcess.stdin);
-           ffmpegProcess.stdout.pipe(require('fs').createWriteStream(audioOutputFile))
+           ffmpegProcess.stdout.pipe(res)
            ffmpegProcess.on('exit', () => {
                console.log("Audio file saved", audioOutputFile)
-               res.download(audioOutputFile)
+               //res.download(audioOutputFile)
            })
        } else {
             new Error("Invalid youtube video URL")
