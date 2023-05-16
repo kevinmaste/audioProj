@@ -15,6 +15,8 @@
     "@types/node": "^16.18.23",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "axios": "^1.4.0",
+    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
@@ -23,7 +25,8 @@
     "typescript": "^4.9.5",
     "wavesurfer.js": "^6.6.3",
     "web-vitals": "^2.1.4",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "youtube-search-api": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

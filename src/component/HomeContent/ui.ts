@@ -1,13 +1,20 @@
 import styled from "@emotion/styled";
 import background from "../../assets/images/background-3.jpg"
+import {style} from "wavesurfer.js/src/util";
 export const ContentBody = styled.div`
   
   position: relative;
   
 `
 
-export const MeteoContent= styled.div`
-  background-image: url(${background});
+
+//type Content
+type contentProps ={
+    url:string
+}
+export const MeteoContent= styled.div<contentProps>`
+  background-image: url(${props=>props.url});
+  padding: 10px;
   width: 100%;
   height: 70vh;
   background-size: cover;
@@ -18,7 +25,7 @@ export const MeteoContent= styled.div`
 `
 
 export const BottomMeteoContent = styled.div`
-  width: 87%;
+  width: 90%;
   border-radius: 1rem;
   background-color: #fdfdfdfa;
   height: 7rem;
@@ -31,26 +38,62 @@ export const BottomMeteoContent = styled.div`
 `
 
 export const BottomContent = styled.div`
-  display: flex;
-  height: inherit;
-  align-items: center;
-  padding: 1.5rem;
+  //display: flex;
+  //height: inherit;
+  //align-items: center;
+  //padding: 1.5rem;
   //before that was first-child
+  height: inherit;
+  display: flex;
+  align-items: center;
+  padding-right: .8rem;
   &>div:first-of-type{
     flex-grow: 1;
+    
   }
 `
 
 export const BottomItem2=styled.div`
   //same here
-  & > div:first-of-type{
-    background-color: #9ad4ff;
+  //margin-right: 5px;
+  margin: 3px 0;
+  & > div:first-of-type {
+    background-color: #ffffff00;
     display: flex;
-    padding: 10px;
+    padding: 5px;
     border-radius: 50px;
+    justify-content: center;
+
+
   }
 
-  .MuiSvgIcon-root{
-    color: white;
+  .MuiSvgIcon-root {
+    color:#2de791;
   }
+
+
+`
+
+
+//type for the button item
+
+export const ButtonItem = styled.div`
+
+  background: #8f77ee;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${props => props.className=== "change" ? 0 : 50}px;
+  &:hover{
+    cursor: pointer;
+  }
+`
+
+export const NothingDiv =styled.div`
+
+  display: flex;
+  justify-content: center;
+
 `
