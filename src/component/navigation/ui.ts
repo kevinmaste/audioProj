@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 
 export const Nav = styled.div`
   display: flex;
@@ -34,4 +35,10 @@ export const InputCustom = styled.input<Input>`
   & input[type="text"]:focus{
     outline: none;
   
+`
+
+export const QueueListMusic = styled(QueueMusicIcon)`
+
+    height: 1.2em ;
+
 `

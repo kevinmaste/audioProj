@@ -1,5 +1,5 @@
 import React, {ChangeEvent, SyntheticEvent, useEffect, useRef,KeyboardEvent ,useState} from 'react';
-import {BottomContent, BottomItem2, BottomMeteoContent, ButtonItem, ContentBody, MeteoContent} from "./ui";
+import {BottomContent, BottomItem2, BottomMeteoContent, ButtonItem, ContentBody, MeteoContent, NothingDiv} from "./ui";
 import {Divider, List, ListItem, ListItemText, Snackbar, Typography} from "@mui/material";
 import NearMeIcon from '@mui/icons-material/NearMe';
 import SearchIcon from '@mui/icons-material/Search';
@@ -26,7 +26,7 @@ function Content() {
     const [controlledError,setControlledError]=useState<boolean>(false)
     const [searchItem,setSearchItem]=useState<string>('')
     const [valueBlur,setValueBlur] = useState<string>('')
-
+    const [stringForTheUseEffectV2,setStringForTheUseEffect]=useState<string>('')
     //catching the data from the suggestion part
     const [catchData,setCatchData]=useState<string[] >([])
 
@@ -47,14 +47,27 @@ function Content() {
 
     //the useEffect permit to send the data to the server dans print the element.
      useEffect( ()=>{
+         console.log('premier useEffect avec le call de api suggestion')
+         console.log('-----------SUGGESTION USEEFFECT----------------------')
 
-        if (searchItem !=='') {
-            fetch(`http://localhost:8080/api/suggestion/${searchItem}`)
+         if (searchItem !=='') {
+             console.log('-------------------------searcItem pas string USEEFFECT----------------------')
+
+             fetch(`http://localhost:8080/api/suggestion/${searchItem}`)
                 .then(result => result.json())
                 .then(data=>{
                     console.log("la data est : ",data)
+                    console.log("la data est de type: ",typeof data)
                     //le separateur
                     //separate(data,searchItem)
+                    if (typeof data === "string"){
+                        console.log('-------------------------fecth suggestion dans le fetch suggestion----------------------')
+                        console.log("i'm here men")
+                        setCatchData([]);
+                        setStringForTheUseEffect(searchItem)
+                    }
+                    console.log('-------------------------je suis n est jamais ete dans le if ----------------------')
+
                     setCatchData(data)
                     setTeste(true)
                 })
@@ -65,54 +78,97 @@ function Content() {
 
 
     },[searchItem])
-    console.log("catch item is : ",catchData)
-    //the suggestion can be empty , so if the array in empty this useEffect will automatically use
-    useEffect( ()=>{
+    console.log('-------------------------catchData debut ----------------------')
 
-        if (catchData?.length ===0) {
-            fetch(`http://localhost:8080/api/search/${searchItem}`)
-                .then(result => result.json())
-                .then(data=>{
-                    console.log("la data est d'un element qui n'a pas de sugestion is : ",data)
-                    //le separateur
-                    //separate(data,searchItem)
-                    //setCatchData(data)
-                    //setTeste(true)
-                })
-                .catch(err => {
-                    console.log("L'erreur est : ", err)
-                })
+    console.log("catch item is : ",catchData)
+    console.log("catch item is : ",typeof catchData)
+    console.log('-------------------------catchdata fin----------------------')
+
+    //the suggestion can be empty , so if the array in empty this useEffect will automatically use
+
+    //that fonction will permit to handle the situation of the no suggestion
+    const handleBackTheNoSug = async ()=>{
+        console.log('-------------------------handleBackTheNoSug F debut----------------------')
+        console.log("catchData =",catchData.length)
+        console.log("Type catchData = ",typeof catchData)
+        console.log('-------------------------handleBackTheNoSug F fin----------------------')
+
+        if (typeof catchData ==="string") {
+            console.log('-------------------------handleBackTheNoSug fonction here----------------------')
+            console.log("je suis dedans");
+            console.log('-------------------------handleBackTheNoSug stringForTheUseEffectV2 debut ----------------------')
+            console.log('stringForTheUseEffectV2 = ',stringForTheUseEffectV2 || null)
+
+            try {
+                const resultat = await axios.get(`http://localhost:8080/api/search/${stringForTheUseEffectV2}`)
+                const take_just_the_infos =stringForTheUseEffectV2+' '+resultat?.data.artist?.name;
+                const tab_ephemere = []
+                tab_ephemere.push(take_just_the_infos )
+                setCatchData(tab_ephemere)
+                //setTeste(true)
+            }catch (e) {
+                console.log("erreur est : ",e)
+            }
+            console.log('-------------------------handleBackTheNoSug fonction work----------------------')
+
+
         }
 
+    }
+    //cette fonction est aussi run
+    useEffect( ()=>{
+        console.log('-------------------------handleBackTheNoSug get CALL USEEFFECT----------------------')
+        console.log('je run aussi cette parti pour le changement du catchdata')
+        //here instead of put searchItem that gonna be stringForTheUseEffectV2
+        handleBackTheNoSug()
 
-    },[catchData])
+    },[stringForTheUseEffectV2])
 
     console.log('teste est : ',teste)
 
     const handleSearch = async (item:string,separator:string)=>{
+        console.log('----------------------------1-------------------')
+
         console.log("in handleseacrh is :",item)
-       const {songName,artistName} = separate(item,separator);
+        console.log('-----------------------------------------------')
+        const {songName,artistName} = separate(item,separator);
+        console.log('song Name in search methode is :',songName)
+        console.log('------------------------------------2-----------')
+        console.log('artis name in search methode is :',artistName)
+
 
         try {
             const result = await
                 axios.get(`http://localhost:8080/api/search/${songName}?artist=${artistName}`)
-
+            console.log('--------------------4---------------------------')
+            console.log('the result of the search methode',result)
             setVideoId(result.data['videoId'])
             setvideoInfos({
-                artist:result.data['artist'].name || result.data["album"].name,
+                artist:result.data['artist']?.name || result.data["album"]?.name || result.data["author"]?.name,
                 songName:result.data['name'],
-                thumbnails:result.data.thumbnails[0]?.url
+                thumbnails:result.data.thumbnails[0]?.url || result.data.thumbnails?.url
             })
             console.log('resutat of the song is : ',result.data)
 
         }catch (e) {
             console.log("erreur is ",e)
         }
+        console.log('--------------------5--SET MODAL is set-------------------------')
         setModalOpen(true)
+        console.log("--------------------------The modal change to true")
+
     }
+    console.log('--------------------5--SET MODAL debut-------------------------')
+    console.log("Modal is : ",modalOpen)
+    console.log('--------------------5--SET MODAL FIN-------------------------')
+
+    console.log("---------------------------Video infos debut ----------------------------")
+    console.log('video infos is :',vidoInfos)
+    console.log("---------------------------Video infos fin----------------------------")
 
     //This function close the modal
     const handleCloseModal = ()=>{
+        console.log('-------------je suis dans le handlerClose modal--------')
         setModalOpen(false)
     }
 
@@ -183,7 +239,7 @@ function Content() {
                     </div>
                     :
                     (
-                        <div><span  style={{color:"white",fontSize:"24px"}}>Il  n'y a plus des données</span></div>
+                        <NothingDiv><span  style={{color:"white",fontSize:"24px",textAlign:"center"}}>Il  n'y a plus des données</span></NothingDiv>
                     )
                 }
             </MeteoContent>

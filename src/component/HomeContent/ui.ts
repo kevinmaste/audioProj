@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import background from "../../assets/images/background-3.jpg"
+import {style} from "wavesurfer.js/src/util";
 export const ContentBody = styled.div`
   
   position: relative;
@@ -88,4 +89,11 @@ export const ButtonItem = styled.div`
   &:hover{
     cursor: pointer;
   }
+`
+
+export const NothingDiv =styled.div`
+
+  display: flex;
+  justify-content: center;
+
 `
